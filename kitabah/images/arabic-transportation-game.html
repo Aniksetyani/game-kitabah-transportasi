@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وسائل  المواصلات 🌟 Alat Transportasi</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #FFD460;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #FF6B6B;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            color: #4ECDC4;
+            font-size: 1.8em;
+        }
+        
+        .game-area {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #F9F7F7;
+            border-radius: 15px;
+        }
+        
+        .transportation-image {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            margin: 10px auto;
+            border-radius: 15px;
+            border: 3px solid #4ECDC4;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .transportation-image:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .transportation-image:active {
+            transform: scale(0.98);
+        }
+        
+        .word-display {
+            font-size: 2em;
+            margin: 15px 0;
+            color: #1A535C;
+            min-height: 60px;
+        }
+        
+        input[type="text"] {
+            width: 70%;
+            padding: 12px;
+            font-size: 1.2em;
+            text-align: center;
+            direction: rtl;
+            border: 2px solid #4ECDC4;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        button {
+            background-color: #FF6B6B;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'Tajawal', sans-serif;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: #FF5252;
+        }
+        
+        .feedback {
+            font-size: 1.2em;
+            margin: 15px 0;
+            min-height: 30px;
+            color: #1A535C;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #4ECDC4;
+            border-radius: 15px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .score {
+            font-size: 1.2em;
+            color: #1A535C;
+            margin: 10px 0;
+        }
+        
+        .stars {
+            font-size: 1.5em;
+            margin: 15px 0;
+            color: #FFD700;
+        }
+
+        .arabic-keyboard {
+            margin: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            direction: rtl;
+            text-align: center;
+            justify-content: center;
+        }
+        
+        .key {
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            background-color: #F9F7F7;
+            border: 1px solid #4ECDC4;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        
+        .key:hover {
+            background-color: #4ECDC4;
+            color: white;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            h2 {
+                font-size: 1.4em;
+            }
+            
+            .transportation-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            input[type="text"] {
+                width: 90%;
+            }
+            
+            .key {
+                width: 35px;
+                height: 35px;
+                font-size: 1em;
+            }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            pointer-events: none;
+            opacity: 0;
+        }
+        
+        .level-indicator {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        
+        .level {
+            width: 15px;
+            height: 15px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            margin: 0 5px;
+        }
+        
+        .level.active {
+            background-color: #FF6B6B;
+        }
+        
+        .hint-button {
+            background-color: #4ECDC4;
+            font-size: 1em;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+
+        /* Drawing Canvas Styles */
+        .drawing-pad-container {
+            display: none;
+            max-width: 100%;
+            margin: 15px auto;
+        }
+
+        .drawing-pad {
+            border: 2px solid #4ECDC4;
+            border-radius: 10px;
+            background-color: white;
+            cursor: crosshair;
+            touch-action: none;
+            max-width: 100%;
+        }
+
+        .drawing-controls {
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .drawing-controls button {
+            padding: 8px 15px;
+            font-size: 1em;
+        }
+
+        .input-method-toggle {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #F9F7F7;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .input-toggle-btn {
+            background-color: #e0e0e0;
+            color: #1A535C;
+            border: none;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .input-toggle-btn.active {
+            background-color: #4ECDC4;
+            color: white;
+        }
+        
+        /* Sound Indicator */
+        .sound-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .image-container {
+            position: relative;
+            width: 200px;
+            margin: 0 auto;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.7; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>وسائل  المواصلات 🌟 Alat Transportasi</h1>
+        <h2>تعلم الكتابة باللغة العربية</h2>
+        <div class="level-indicator">
+            <div class="level active"></div>
+            <div class="level"></div>
+            <div class="level"></div>
+        </div>
+        <div class="game-area">
+            <div class="image-container">
+                <img id="transportationImage" class="transportation-image" src="sepeda.png" alt="transportation">
+                <div id="soundIndicator" class="sound-indicator">🔊</div>
+            </div>
+            <div id="wordDisplay" class="word-display"></div>
+            
+            <!-- Input Method Toggle -->
+            <div class="input-method-toggle">
+                <button id="keyboardInputBtn" class="input-toggle-btn active">Keyboard</button>
+                <button id="drawingInputBtn" class="input-toggle-btn">Draw Arabic</button>
+            </div>
+            
+            <!-- Traditional Keyboard Input -->
+            <div id="keyboardInputContainer">
+                <input type="text" id="userInput" placeholder="اكتب الكلمة بالعربية" dir="rtl">
+                <div class="arabic-keyboard" id="arabicKeyboard"></div>
+            </div>
+            
+            <!-- Drawing Input -->
+            <div id="drawingPadContainer" class="drawing-pad-container">
+                <canvas id="drawingPad" class="drawing-pad" width="400" height="200"></canvas>
+                <div class="drawing-controls">
+                    <button id="clearDrawingBtn">Clear</button>
+                    <button id="submitDrawingBtn">Submit</button>
+                </div>
+            </div>
+            
+            <div id="feedback" class="feedback"></div>
+            <button id="checkButton">Periksa</button>
+            <button id="hintButton" class="hint-button">Petunjuk</button>
+            <button id="nextButton" style="display: none;">Selanjutnya</button>
+            <div class="progress-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <div id="score" class="score">Skor: 0</div>
+            <div id="stars" class="stars"></div>
+        </div>
+    </div>
+
+    <div id="congratsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Selamat! 🎉</h2>
+            <p>Kamu telah menyelesaikan permainan ini dengan baik!</p>
+            <div id="finalScore" class="score">Skor Akhir: 0</div>
+            <div id="finalStars" class="stars"></div>
+            <button id="playAgainButton">Main Lagi</button>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="sepedaAudio" src="sepeda.mp3" preload="auto"></audio>
+    <audio id="kapalAudio" src="kapal.mp3" preload="auto"></audio>
+    <audio id="keretaAudio" src="kereta.mp3" preload="auto"></audio>
+    <audio id="pesawatAudio" src="pesawat.mp3" preload="auto"></audio>
+    <audio id="busAudio" src="bus.mp3" preload="auto"></audio>
+
+    <script>
+        const professions = [
+            { 
+                arabic: "دَرَّاجَة", 
+                indonesian: "Sepeda",
+                image: "sepeda.png",
+                hint: "Kendaraan beroda dua yang dikayuh dengan kaki",
+                audio: "sepedaAudio"
+            },
+            { 
+                arabic: "سَفِينَة", 
+                indonesian: "Kapal",
+                image: "kapal.png",
+                hint: "Kendaraan yang digunakan di laut",
+                audio: "kapalAudio"
+            },
+            { 
+                arabic: "قِطَار", 
+                indonesian: "Kereta",
+                image: "kereta.png",
+                hint: "Kendaraan yang berjalan di rel",
+                audio: "keretaAudio"
+            },
+            { 
+                arabic: "طَائِرَة", 
+                indonesian: "Pesawat",
+                image: "pesawat.png",
+                hint: "Kendaraan yang terbang di udara",
+                audio: "pesawatAudio"
+            },
+            { 
+                arabic: "حَافِلَة", 
+                indonesian: "Bus",
+                image: "bus.png",
+                hint: "Kendaraan besar untuk transportasi umum",
+                audio: "busAudio"
+            },
+            { 
+                arabic: "دَرَّاجَة", 
+                indonesian: "Sepeda",
+                image: "sepeda.png",
+                hint: "Kendaraan beroda dua yang dikayuh dengan kaki",
+                audio: "sepedaAudio"
+            },
+            { 
+                arabic: "سَفِينَة", 
+                indonesian: "Kapal",
+                image: "kapal.png",
+                hint: "Kendaraan yang digunakan di laut",
+                audio: "kapalAudio"
+            },
+            { 
+                arabic: "قِطَار", 
+                indonesian: "Kereta",
+                image: "kereta.png",
+                hint: "Kendaraan yang berjalan di rel",
+                audio: "keretaAudio"
+            },
+            { 
+                arabic: "طَائِرَة", 
+                indonesian: "Pesawat",
+                image: "pesawat.png",
+                hint: "Kendaraan yang terbang di udara",
+                audio: "pesawatAudio"
+            },
+            { 
+                arabic: "حَافِلَة", 
+                indonesian: "Bus",
+                image: "bus.png",
+                hint: "Kendaraan besar untuk transportasi umum",
+                audio: "busAudio"
+            },
+            { 
+                arabic: "دَرَّاجَة", 
+                indonesian: "Sepeda",
+                image: "sepeda.png",
+                hint: "Kendaraan beroda dua yang dikayuh dengan kaki",
+                audio: "sepedaAudio"
+            },
+            { 
+                arabic: "سَفِينَة", 
+                indonesian: "Kapal",
+                image: "kapal.png",
+                hint: "Kendaraan yang digunakan di laut",
+                audio: "kapalAudio"
+            },
+            { 
+                arabic: "قِطَار", 
+                indonesian: "Kereta",
+                image: "kereta.png",
+                hint: "Kendaraan yang berjalan di rel",
+                audio: "keretaAudio"
+            },
+            { 
+                arabic: "طَائِرَة", 
+                indonesian: "Pesawat",
+                image: "pesawat.png",
+                hint: "Kendaraan yang terbang di udara",
+                audio: "pesawatAudio"
+            },
+            { 
+                arabic: "حَافِلَة", 
+                indonesian: "Bus",
+                image: "bus.png",
+                hint: "Kendaraan besar untuk transportasi umum",
+                audio: "busAudio"
+            },
+            { 
+                arabic: "دَرَّاجَة", 
+                indonesian: "Sepeda",
+                image: "sepeda.png",
+                hint: "Kendaraan beroda dua yang dikayuh dengan kaki",
+                audio: "sepedaAudio"
+            },
+            { 
+                arabic: "سَفِينَة", 
+                indonesian: "Kapal",
+                image: "kapal.png",
+                hint: "Kendaraan yang digunakan di laut",
+                audio: "kapalAudio"
+            },
+            { 
+                arabic: "قِطَار", 
+                indonesian: "Kereta",
+                image: "kereta.png",
+                hint: "Kendaraan yang berjalan di rel",
+                audio: "keretaAudio"
+            },
+            { 
+                arabic: "طَائِرَة", 
+                indonesian: "Pesawat",
+                image: "pesawat.png",
+                hint: "Kendaraan yang terbang di udara",
+                audio: "pesawatAudio"
+            },
+            { 
+                arabic: "حَافِلَة", 
+                indonesian: "Bus",
+                image: "bus.png",
+                hint: "Kendaraan besar untuk transportasi umum",
+                audio: "busAudio"
+            },
+        ];
+
+        const arabicCharacters = [
+            'ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 
+            'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 
+            'و', 'ي', 'ء', 'ة', 'َ', 'ُ', 'ِ', 'ّ', 'ْ'
+        ];
+
+        let currentLevel = 1;
+        let currentWordIndex = 0;
+        let score = 0;
+        let attempts = 0;
+        let shuffledProfessions = [...professions];
+        let isDrawing = false;
+
+        // Elements
+        const professionImage = document.getElementById('transportationImage');
+        const wordDisplay = document.getElementById('wordDisplay');
+        const userInput = document.getElementById('userInput');
+        const feedbackElement = document.getElementById('feedback');
+        const checkButton = document.getElementById('checkButton');
+        const nextButton = document.getElementById('nextButton');
+        const hintButton = document.getElementById('hintButton');
+        const progressBar = document.getElementById('progressBar');
+        const scoreElement = document.getElementById('score');
+        const starsElement = document.getElementById('stars');
+        const arabicKeyboard = document.getElementById('arabicKeyboard');
+        const congratsModal = document.getElementById('congratsModal');
+        const finalScore = document.getElementById('finalScore');
+        const finalStars = document.getElementById('finalStars');
+        const playAgainButton = document.getElementById('playAgainButton');
+        const closeModalButton = document.querySelector('.close');
+        const levelIndicators = document.querySelectorAll('.level');
+        const soundIndicator = document.getElementById('soundIndicator');
+        
+        // Drawing pad elements
+        const keyboardInputBtn = document.getElementById('keyboardInputBtn');
+        const drawingInputBtn = document.getElementById('drawingInputBtn');
+        const keyboardInputContainer = document.getElementById('keyboardInputContainer');
+        const drawingPadContainer = document.getElementById('drawingPadContainer');
+        const drawingPad = document.getElementById('drawingPad');
+        const clearDrawingBtn = document.getElementById('clearDrawingBtn');
+        const submitDrawingBtn = document.getElementById('submitDrawingBtn');
+        
+        // Drawing pad variables
+        const ctx = drawingPad.getContext('2d');
+        let isDrawingEnabled = false;
+        let lastX = 0;
+        let lastY = 0;
+        
+        // Play sound when image is clicked
+        professionImage.addEventListener('click', playTransportationSound);
+        
+        function playTransportationSound() {
+            const wordIndex = (currentLevel - 1) * 5 + currentWordIndex;
+            const profession = shuffledProfessions[wordIndex];
+            const audio = document.getElementById(profession.audio);
+            
+            if (audio) {
+                audio.currentTime = 0; // Reset audio to start
+                audio.play();
+                
+                // Show sound indicator animation
+                soundIndicator.style.opacity = '1';
+                soundIndicator.style.animation = 'pulse 0.8s ease-out';
+                
+                setTimeout(() => {
+                    soundIndicator.style.opacity = '0';
+                    soundIndicator.style.animation = 'none';
+                }, 800);
+            }
+        }
+        
+        // Toggle input methods
+        keyboardInputBtn.addEventListener('click', () => {
+            keyboardInputBtn.classList.add('active');
+            drawingInputBtn.classList.remove('active');
+            keyboardInputContainer.style.display = 'block';
+            drawingPadContainer.style.display = 'none';
+        });
+        
+        drawingInputBtn.addEventListener('click', () => {
+            keyboardInputBtn.classList.remove('active');
+            drawingInputBtn.classList.add('active');
+            keyboardInputContainer.style.display = 'none';
+            drawingPadContainer.style.display = 'block';
+        });
+        
+        // Drawing pad functions
+        function setupDrawingPad() {
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#1A535C';
+            
+            // Clear canvas
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, drawingPad.width, drawingPad.height);
+            
+            // Touch events
+            drawingPad.addEventListener('touchstart', startDrawing);
+            drawingPad.addEventListener('touchmove', draw);
+            drawingPad.addEventListener('touchend', stopDrawing);
+            
+            // Mouse events
+            drawingPad.addEventListener('mousedown', startDrawing);
+            drawingPad.addEventListener('mousemove', draw);
+            drawingPad.addEventListener('mouseup', stopDrawing);
+            drawingPad.addEventListener('mouseout', stopDrawing);
+            
+            clearDrawingBtn.addEventListener('click', clearDrawing);
+            submitDrawingBtn.addEventListener('click', submitDrawing);
+        }
+        
+        function startDrawing(e) {
+            e.preventDefault();
+            isDrawingEnabled = true;
+            
+            // Get coordinates
+            const coords = getCoordinates(e);
+            lastX = coords.x;
+            lastY = coords.y;
+        }
+        
+        function draw(e) {
+            e.preventDefault();
+            if (!isDrawingEnabled) return;
+            
+            const coords = getCoordinates(e);
+            const x = coords.x;
+            const y = coords.y;
+            
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            
+            lastX = x;
+            lastY = y;
+        }
+        
+        function stopDrawing() {
+            isDrawingEnabled = false;
+        }
+        
+        function getCoordinates(e) {
+            let x, y;
+            
+            if (e.type.includes('touch')) {
+                const rect = drawingPad.getBoundingClientRect();
+                x = e.touches[0].clientX - rect.left;
+                y = e.touches[0].clientY - rect.top;
+            } else {
+                const rect = drawingPad.getBoundingClientRect();
+                x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
+            }
+            
+            return { x, y };
+        }
+        
+        function clearDrawing() {
+            ctx.clearRect(0, 0, drawingPad.width, drawingPad.height);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, drawingPad.width, drawingPad.height);
+        }
+        
+        function submitDrawing() {
+            // For now, this is a placeholder.
+            // In a real implementation, this would use image recognition to convert the drawn
+            // Arabic to text, but that's beyond the scope of this demo.
+            feedbackElement.textContent = "Gambar berhasil dikirim! Silakan klik 'Periksa' untuk memeriksa jawaban.";
+            
+            // For demo purposes, we'll auto-fill the userInput with the correct answer
+            // In a real implementation, this would be the result of the OCR
+            const wordIndex = (currentLevel - 1) * 5 + currentWordIndex;
+            userInput.value = shuffledProfessions[wordIndex].arabic;
+            
+            // Switch back to keyboard input to show the result
+            keyboardInputBtn.click();
+        }
+
+        // Shuffle array function
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Initialize game
+        function initGame() {
+            shuffledProfessions = shuffleArray([...professions]);
+            currentWordIndex = 0;
+            score = 0;
+            attempts = 0;
+            updateScoreDisplay();
+            showNextWord();
+            updateLevelIndicator();
+            createArabicKeyboard();
+            setupDrawingPad();
+        }
+
+        // Create Arabic keyboard
+        function createArabicKeyboard() {
+            arabicKeyboard.innerHTML = '';
+            arabicCharacters.forEach(char => {
+                const key = document.createElement('div');
+                key.className = 'key';
+                key.textContent = char;
+                key.addEventListener('click', () => {
+                    userInput.value += char;
+                    userInput.focus();
+                });
+                arabicKeyboard.appendChild(key);
+            });
+        }
+
+        // Show next word
+        function showNextWord() {
+            if (currentWordIndex >= 5 * currentLevel) {
+                if (currentLevel < 3) {
+                    currentLevel++;
+                    currentWordIndex = 0;
+                    updateLevelIndicator();
+                    showNextWord();
+                } else {
+                    // End of game
+                    finalScore.textContent = `Skor Akhir: ${score}`;
+                    const starCount = Math.floor(score / 50);
+                    finalStars.textContent = '⭐'.repeat(starCount);
+                    congratsModal.style.display = 'block';
+                }
+                return;
+            }
+
+            const wordIndex = (currentLevel - 1) * 5 + currentWordIndex;
+            if (wordIndex >= shuffledProfessions.length) {
+                // In case we run out of words
+                finalScore.textContent = `Skor Akhir: ${score}`;
+                const starCount = Math.floor(score / 50);
+                finalStars.textContent = '⭐'.repeat(starCount);
+                congratsModal.style.display = 'block';
+                return;
+            }
+            
+            const profession = shuffledProfessions[wordIndex];
+            
+            professionImage.src = profession.image;
+            professionImage.alt = profession.indonesian;
+            
+            // Display the Indonesian word and adjust based on level
+            if (currentLevel === 1) {
+                wordDisplay.textContent = `${profession.indonesian} (${profession.arabic})`;
+            } else if (currentLevel === 2) {
+                const hiddenArabic = profession.arabic.split('').map(char => {
+                    return (Math.random() > 0.5) ? char : '؟';
+                }).join('');
+                wordDisplay.textContent = `${profession.indonesian} (${hiddenArabic})`;
+            } else {
+                wordDisplay.textContent = profession.indonesian;
+            }
+            
+            userInput.value = '';
+            feedbackElement.textContent = '';
+            nextButton.style.display = 'none';
+            checkButton.style.display = 'inline-block';
+            
+            // Reset drawing pad
+            clearDrawing();
+            
+            // Update progress bar
+            const progressPercentage = (currentWordIndex + (currentLevel - 1) * 5) / 15 * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+        }
+
+        // Check answer
+        function checkAnswer() {
+            const wordIndex = (currentLevel - 1) * 5 + currentWordIndex;
+            const correctAnswer = shuffledProfessions[wordIndex].arabic;
+            const userAnswer = userInput.value.trim();
+            
+            if (userAnswer === correctAnswer) {
+                feedbackElement.textContent = '✅ Benar! Hebat sekali!';
+                feedbackElement.style.color = '#4ECDC4';
+                score += 10 - attempts;
+                updateScoreDisplay();
+                showConfetti();
+                checkButton.style.display = 'none';
+                nextButton.style.display = 'inline-block';
+                attempts = 0;
+            } else {
+                feedbackElement.textContent = '❌ Coba lagi!';
+                feedbackElement.style.color = '#FF6B6B';
+                attempts++;
+            }
+        }
+
+        // Show hint
+        function showHint() {
+            const wordIndex = (currentLevel - 1) * 5 + currentWordIndex;
+            const profession = shuffledProfessions[wordIndex];
+            feedbackElement.textContent = `Petunjuk: ${profession.hint}`;
+            feedbackElement.style.color = '#1A535C';
+        }
+
+        // Update score display
+        function updateScoreDisplay() {
+            scoreElement.textContent = `Skor: ${score}`;
+            const starCount = Math.floor(score / 50);
+            starsElement.textContent = '⭐'.repeat(starCount);
+        }
+
+        // Update level indicator
+        function updateLevelIndicator() {
+            levelIndicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index + 1 === currentLevel);
+            });
+        }
+
+        // Show confetti animation
+        function showConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = `${Math.random() * 30}%`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(confetti);
+                
+                // Animation
+                setTimeout(() => {
+                    confetti.style.transition = 'all 1s ease-out';
+                    confetti.style.opacity = '1';
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg) translate(${Math.random() * 100 - 50}px, ${Math.random() * 200 + 100}px)`;
+                }, 10);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.style.opacity = '0';
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 1000);
+                }, 1000);
+            }
+        }
+
+        // Event listeners
+        checkButton.addEventListener('click', checkAnswer);
+        
+        nextButton.addEventListener('click', () => {
+            currentWordIndex++;
+            showNextWord();
+        });
+        
+        hintButton.addEventListener('click', showHint);
+        
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && checkButton.style.display !== 'none') {
+                checkAnswer();
+            }
+        });
+        
+        playAgainButton.addEventListener('click', () => {
+            congratsModal.style.display = 'none';
+            currentLevel = 1;
+            initGame();
+        });
+        
+        closeModalButton.addEventListener('click', () => {
+            congratsModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === congratsModal) {
+                congratsModal.style.display = 'none';
+            }
+        });
+
+        // Start the game
+        initGame();
+    </script>
+</body>
+</html>
